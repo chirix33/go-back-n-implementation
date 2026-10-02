@@ -1,0 +1,219 @@
+-----  Stop and Wait Network Simulator Version 1.1 -------- 
+
+Enter the number of messages to simulate: Enter  packet loss probability [enter 0.0 for no loss]:Enter packet corruption probability [0.0 for no corruption]:Enter average time between messages from sender's layer5 [ > 0.0]:Enter TRACE:
+EVENT time: 0.935697,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 1
+A: window has room, sending buffered seq 1 (base=1, sent_upto=1)
+
+EVENT time: 6.428144,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 1, delivering to layer5
+
+EVENT time: 8.927275,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 1 received
+A_input: all outstanding packets acked, stopping timer
+
+EVENT time: 16.077150,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 2
+A: window has room, sending buffered seq 2 (base=2, sent_upto=2)
+
+EVENT time: 17.478437,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 2, delivering to layer5
+
+EVENT time: 22.915127,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 2 received
+A_input: all outstanding packets acked, stopping timer
+
+EVENT time: 23.220314,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 3
+A: window has room, sending buffered seq 3 (base=3, sent_upto=3)
+
+EVENT time: 26.716484,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 3, delivering to layer5
+
+EVENT time: 29.601521,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 3 received
+A_input: all outstanding packets acked, stopping timer
+
+EVENT time: 33.328045,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 4
+A: window has room, sending buffered seq 4 (base=4, sent_upto=4)
+
+EVENT time: 37.904480,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 4, delivering to layer5
+
+EVENT time: 45.933746,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 4 received
+A_input: all outstanding packets acked, stopping timer
+
+EVENT time: 50.578938,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 5
+A: window has room, sending buffered seq 5 (base=5, sent_upto=5)
+
+EVENT time: 56.140324,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 5, delivering to layer5
+
+EVENT time: 57.463303,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 6
+A: window has room, sending buffered seq 6 (base=5, sent_upto=6)
+
+EVENT time: 59.661125,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 6, delivering to layer5
+
+EVENT time: 62.224953,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 5 received
+A_input: 1 packet(s) still outstanding, restarting timer
+
+EVENT time: 71.872559,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 6 received
+A_input: all outstanding packets acked, stopping timer
+
+EVENT time: 75.985596,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 7
+A: window has room, sending buffered seq 7 (base=7, sent_upto=7)
+
+EVENT time: 81.270790,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 8
+A: window has room, sending buffered seq 8 (base=7, sent_upto=8)
+
+EVENT time: 82.442703,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 9
+A: window has room, sending buffered seq 9 (base=7, sent_upto=9)
+
+EVENT time: 83.728111,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 7, delivering to layer5
+
+EVENT time: 88.735222,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 7 received
+A_input: 2 packet(s) still outstanding, restarting timer
+
+EVENT time: 91.882629,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 8, delivering to layer5
+
+EVENT time: 97.468460,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 8 received
+A_input: 1 packet(s) still outstanding, restarting timer
+
+EVENT time: 101.517593,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 9, delivering to layer5
+
+EVENT time: 101.556442,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 10
+A: window has room, sending buffered seq 10 (base=9, sent_upto=10)
+
+EVENT time: 103.853294,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 9 received
+A_input: 1 packet(s) still outstanding, restarting timer
+
+EVENT time: 105.870842,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 10, delivering to layer5
+
+EVENT time: 114.973503,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 10 received
+A_input: all outstanding packets acked, stopping timer
+
+EVENT time: 116.471451,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 11
+A: window has room, sending buffered seq 11 (base=11, sent_upto=11)
+
+EVENT time: 121.442307,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 11, delivering to layer5
+
+EVENT time: 130.966034,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 11 received
+A_input: all outstanding packets acked, stopping timer
+
+EVENT time: 131.702026,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 12
+A: window has room, sending buffered seq 12 (base=12, sent_upto=12)
+
+EVENT time: 133.716370,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 12, delivering to layer5
+
+EVENT time: 133.926208,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 13
+A: window has room, sending buffered seq 13 (base=12, sent_upto=13)
+
+EVENT time: 135.641708,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 13, delivering to layer5
+
+EVENT time: 139.722992,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 12 received
+A_input: 1 packet(s) still outstanding, restarting timer
+
+EVENT time: 141.029083,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 14
+A: window has room, sending buffered seq 14 (base=13, sent_upto=14)
+
+EVENT time: 141.266556,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 13 received
+A_input: 1 packet(s) still outstanding, restarting timer
+
+EVENT time: 144.478897,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 15
+A: window has room, sending buffered seq 15 (base=14, sent_upto=15)
+
+EVENT time: 146.946991,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 14, delivering to layer5
+
+EVENT time: 149.465897,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 15, delivering to layer5
+
+EVENT time: 153.812683,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 16
+A: window has room, sending buffered seq 16 (base=14, sent_upto=16)
+
+EVENT time: 156.854156,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 14 received
+A_input: 2 packet(s) still outstanding, restarting timer
+
+EVENT time: 159.967346,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 16, delivering to layer5
+
+EVENT time: 160.766449,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 15 received
+A_input: 1 packet(s) still outstanding, restarting timer
+
+EVENT time: 169.427994,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 16 received
+A_input: all outstanding packets acked, stopping timer
+
+EVENT time: 173.292648,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 17
+A: window has room, sending buffered seq 17 (base=17, sent_upto=17)
+
+EVENT time: 180.311966,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 17, delivering to layer5
+
+EVENT time: 182.098343,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 17 received
+A_input: all outstanding packets acked, stopping timer
+
+EVENT time: 183.963135,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 18
+A: window has room, sending buffered seq 18 (base=18, sent_upto=18)
+
+EVENT time: 190.198822,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 18, delivering to layer5
+
+EVENT time: 193.251953,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 18 received
+A_input: all outstanding packets acked, stopping timer
+
+EVENT time: 198.778656,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 19
+A: window has room, sending buffered seq 19 (base=19, sent_upto=19)
+
+EVENT time: 200.725983,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 19, delivering to layer5
+
+EVENT time: 202.069046,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 19 received
+A_input: all outstanding packets acked, stopping timer
+
+EVENT time: 210.870087,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 20
+A: window has room, sending buffered seq 20 (base=20, sent_upto=20)
+
+EVENT time: 219.533279,  type: 2, fromlayer3  entity: 1
+ Simulator terminated at time 219.533279
+ after sending 20 msgs from layer5
