@@ -88,12 +88,11 @@ struct pkt {
 
 #define WINDOW_N      8
 #define MAXBUF        50
-/* Tuned empirically against the assignment's mandated test case (loss=0.2,
-   corrupt=0.2, mean arrival=10, window=8): a timer this size keeps the
-   sender retransmitting often enough to drain the window under heavy
-   loss/corruption without triggering so many spurious timeouts (from
-   queueing delay alone) that it makes congestion worse. See report for
-   the buffer-overflow / stability discussion at very high loss + long runs. */
+/* Chosen empirically on the mandated case (loss=0.2, corrupt=0.2, mean
+   arrival=10, window=8): ~15-25 gives the best throughput; much shorter
+   causes spurious timeouts, much longer leaves the sender idle after a
+   loss. 25 gives similar throughput to 15 with far fewer retransmissions.
+   See README "Timer tuning" for the measurements. */
 #define A_TIMEOUT     25.0
 
 /* ---------------- A (sender) state ---------------- */

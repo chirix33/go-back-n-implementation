@@ -1,0 +1,692 @@
+-----  Stop and Wait Network Simulator Version 1.1 -------- 
+
+Enter the number of messages to simulate: Enter  packet loss probability [enter 0.0 for no loss]:Enter packet corruption probability [0.0 for no corruption]:Enter average time between messages from sender's layer5 [ > 0.0]:Enter TRACE:
+EVENT time: 0.935697,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 1
+A: window has room, sending buffered seq 1 (base=1, sent_upto=1)
+
+EVENT time: 6.428144,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 1, delivering to layer5
+
+EVENT time: 8.927275,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 1 received
+A_input: all outstanding packets acked, stopping timer
+
+EVENT time: 16.077150,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 2
+A: window has room, sending buffered seq 2 (base=2, sent_upto=2)
+
+EVENT time: 17.478437,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 2, delivering to layer5
+
+EVENT time: 22.915127,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 2 received
+A_input: all outstanding packets acked, stopping timer
+
+EVENT time: 23.220314,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 3
+A: window has room, sending buffered seq 3 (base=3, sent_upto=3)
+
+EVENT time: 26.716484,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 3, delivering to layer5
+
+EVENT time: 29.601521,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 3 received
+A_input: all outstanding packets acked, stopping timer
+
+EVENT time: 33.328045,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 4
+A: window has room, sending buffered seq 4 (base=4, sent_upto=4)
+
+EVENT time: 37.904480,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 4, delivering to layer5
+
+EVENT time: 45.933746,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 4 received
+A_input: all outstanding packets acked, stopping timer
+
+EVENT time: 50.578938,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 5
+A: window has room, sending buffered seq 5 (base=5, sent_upto=5)
+
+EVENT time: 56.140324,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 5, delivering to layer5
+          TOLAYER3: packet being lost
+
+EVENT time: 57.463303,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 6
+A: window has room, sending buffered seq 6 (base=5, sent_upto=6)
+
+EVENT time: 66.798332,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 6, delivering to layer5
+          TOLAYER3: packet being lost
+
+EVENT time: 68.762474,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 7
+A: window has room, sending buffered seq 7 (base=5, sent_upto=7)
+          TOLAYER3: packet being lost
+
+EVENT time: 75.578934,  type: 0, timerinterrupt   entity: 0
+A_timerinterrupt: timeout! retransmitting seq 5 through 7
+          TOLAYER3: packet being lost
+
+EVENT time: 80.157837,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 5, expected 7), discarding, re-acking 6
+          TOLAYER3: packet being corrupted
+
+EVENT time: 81.533249,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 8
+A: window has room, sending buffered seq 8 (base=5, sent_upto=8)
+
+EVENT time: 87.900352,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 6, expected 7), discarding, re-acking 6
+
+EVENT time: 88.312355,  type: 2, fromlayer3  entity: 0
+A_input: corrupted ack packet received, ignoring (will rely on timeout)
+
+EVENT time: 89.170624,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 8, expected 7), discarding, re-acking 6
+
+EVENT time: 91.038544,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 9
+A: window has room, sending buffered seq 9 (base=5, sent_upto=9)
+          TOLAYER3: packet being corrupted
+
+EVENT time: 94.006775,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 10
+A: window has room, sending buffered seq 10 (base=5, sent_upto=10)
+
+EVENT time: 94.393684,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 6 received
+A_input: 4 packet(s) still outstanding, restarting timer
+
+EVENT time: 98.750298,  type: 2, fromlayer3  entity: 1
+B_input: corrupted packet received, re-acking 6
+
+EVENT time: 98.945396,  type: 2, fromlayer3  entity: 0
+A_input: old/duplicate ACK 6 received (base already 7), ignoring
+
+EVENT time: 101.811478,  type: 2, fromlayer3  entity: 0
+A_input: old/duplicate ACK 6 received (base already 7), ignoring
+
+EVENT time: 107.852959,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 10, expected 7), discarding, re-acking 6
+          TOLAYER3: packet being lost
+
+EVENT time: 112.718895,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 11
+A: window has room, sending buffered seq 11 (base=7, sent_upto=11)
+          TOLAYER3: packet being corrupted
+
+EVENT time: 114.755211,  type: 2, fromlayer3  entity: 1
+B_input: corrupted packet received, re-acking 6
+          TOLAYER3: packet being lost
+
+EVENT time: 119.393684,  type: 0, timerinterrupt   entity: 0
+A_timerinterrupt: timeout! retransmitting seq 7 through 11
+          TOLAYER3: packet being lost
+          TOLAYER3: packet being lost
+
+EVENT time: 120.554367,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 7, delivering to layer5
+          TOLAYER3: packet being lost
+
+EVENT time: 124.750664,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 8, delivering to layer5
+
+EVENT time: 126.294228,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 11, expected 9), discarding, re-acking 8
+          TOLAYER3: packet being corrupted
+
+EVENT time: 127.965332,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 12
+A: window has room, sending buffered seq 12 (base=7, sent_upto=12)
+
+EVENT time: 129.887390,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 13
+A: window has room, sending buffered seq 13 (base=7, sent_upto=13)
+
+EVENT time: 130.668564,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 8 received
+A_input: 5 packet(s) still outstanding, restarting timer
+
+EVENT time: 132.648056,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 12, expected 9), discarding, re-acking 8
+
+EVENT time: 136.359146,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 14
+A: window has room, sending buffered seq 14 (base=9, sent_upto=14)
+          TOLAYER3: packet being lost
+
+EVENT time: 138.063354,  type: 2, fromlayer3  entity: 0
+A_input: corrupted ack packet received, ignoring (will rely on timeout)
+
+EVENT time: 142.414047,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 13, expected 9), discarding, re-acking 8
+
+EVENT time: 146.045380,  type: 2, fromlayer3  entity: 0
+A_input: old/duplicate ACK 8 received (base already 9), ignoring
+
+EVENT time: 151.784485,  type: 2, fromlayer3  entity: 0
+A_input: old/duplicate ACK 8 received (base already 9), ignoring
+
+EVENT time: 153.384811,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 15
+A: window has room, sending buffered seq 15 (base=9, sent_upto=15)
+          TOLAYER3: packet being corrupted
+
+EVENT time: 155.171188,  type: 2, fromlayer3  entity: 1
+B_input: corrupted packet received, re-acking 8
+
+EVENT time: 155.668564,  type: 0, timerinterrupt   entity: 0
+A_timerinterrupt: timeout! retransmitting seq 9 through 15
+          TOLAYER3: packet being lost
+          TOLAYER3: packet being lost
+
+EVENT time: 159.623428,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 10, expected 9), discarding, re-acking 8
+
+EVENT time: 161.406876,  type: 2, fromlayer3  entity: 0
+A_input: old/duplicate ACK 8 received (base already 9), ignoring
+
+EVENT time: 161.570755,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 11, expected 9), discarding, re-acking 8
+
+EVENT time: 162.418137,  type: 2, fromlayer3  entity: 0
+A_input: old/duplicate ACK 8 received (base already 9), ignoring
+
+EVENT time: 162.913818,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 12, expected 9), discarding, re-acking 8
+
+EVENT time: 163.963531,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 13, expected 9), discarding, re-acking 8
+
+EVENT time: 165.449295,  type: 2, fromlayer3  entity: 0
+A_input: old/duplicate ACK 8 received (base already 9), ignoring
+
+EVENT time: 166.559647,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 16
+A: window has room, sending buffered seq 16 (base=9, sent_upto=16)
+          TOLAYER3: packet being lost
+
+EVENT time: 168.048584,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 15, expected 9), discarding, re-acking 8
+
+EVENT time: 169.637344,  type: 2, fromlayer3  entity: 0
+A_input: old/duplicate ACK 8 received (base already 9), ignoring
+
+EVENT time: 177.919861,  type: 2, fromlayer3  entity: 0
+A_input: old/duplicate ACK 8 received (base already 9), ignoring
+
+EVENT time: 178.956879,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 17
+
+EVENT time: 179.937744,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 18
+
+EVENT time: 180.668564,  type: 0, timerinterrupt   entity: 0
+A_timerinterrupt: timeout! retransmitting seq 9 through 16
+          TOLAYER3: packet being lost
+          TOLAYER3: packet being lost
+          TOLAYER3: packet being corrupted
+
+EVENT time: 182.032776,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 9, delivering to layer5
+          TOLAYER3: packet being lost
+
+EVENT time: 186.569382,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 10, delivering to layer5
+
+EVENT time: 186.950012,  type: 2, fromlayer3  entity: 0
+A_input: old/duplicate ACK 8 received (base already 9), ignoring
+
+EVENT time: 188.348648,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 19
+
+EVENT time: 190.772217,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 10 received
+A_input: 6 packet(s) still outstanding, restarting timer
+A: window has room, sending buffered seq 17 (base=11, sent_upto=17)
+A: window has room, sending buffered seq 18 (base=11, sent_upto=18)
+          TOLAYER3: packet being lost
+
+EVENT time: 195.726700,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 11, delivering to layer5
+          TOLAYER3: packet being lost
+
+EVENT time: 196.318253,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 20
+
+EVENT time: 199.743652,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 21
+
+EVENT time: 205.315247,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 14, expected 12), discarding, re-acking 11
+
+EVENT time: 206.467133,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 11 received
+A_input: 7 packet(s) still outstanding, restarting timer
+A: window has room, sending buffered seq 19 (base=12, sent_upto=19)
+
+EVENT time: 209.801590,  type: 2, fromlayer3  entity: 1
+B_input: corrupted packet received, re-acking 11
+
+EVENT time: 212.580963,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 22
+
+EVENT time: 213.095612,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 16, expected 12), discarding, re-acking 11
+
+EVENT time: 219.190186,  type: 2, fromlayer3  entity: 0
+A_input: old/duplicate ACK 11 received (base already 12), ignoring
+
+EVENT time: 219.668320,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 17, expected 12), discarding, re-acking 11
+          TOLAYER3: packet being lost
+
+EVENT time: 220.503586,  type: 2, fromlayer3  entity: 0
+A_input: old/duplicate ACK 11 received (base already 12), ignoring
+
+EVENT time: 226.018555,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 19, expected 12), discarding, re-acking 11
+
+EVENT time: 228.792999,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 23
+
+EVENT time: 230.899994,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 24
+
+EVENT time: 231.467133,  type: 0, timerinterrupt   entity: 0
+A_timerinterrupt: timeout! retransmitting seq 12 through 19
+          TOLAYER3: packet being lost
+          TOLAYER3: packet being lost
+          TOLAYER3: packet being lost
+          TOLAYER3: packet being corrupted
+
+EVENT time: 232.782990,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 25
+
+EVENT time: 232.841766,  type: 2, fromlayer3  entity: 0
+A_input: old/duplicate ACK 11 received (base already 12), ignoring
+
+EVENT time: 237.326263,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 12, delivering to layer5
+          TOLAYER3: packet being corrupted
+
+EVENT time: 239.271835,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 26
+
+EVENT time: 239.560059,  type: 2, fromlayer3  entity: 0
+A_input: corrupted ack packet received, ignoring (will rely on timeout)
+
+EVENT time: 241.929886,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 14, expected 13), discarding, re-acking 12
+          TOLAYER3: packet being lost
+
+EVENT time: 244.302673,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 15, expected 13), discarding, re-acking 12
+          TOLAYER3: packet being lost
+
+EVENT time: 247.606308,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 18, expected 13), discarding, re-acking 12
+
+EVENT time: 250.084564,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 12 received
+A_input: 7 packet(s) still outstanding, restarting timer
+A: window has room, sending buffered seq 20 (base=13, sent_upto=20)
+
+EVENT time: 252.982574,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 27
+
+EVENT time: 255.832779,  type: 2, fromlayer3  entity: 1
+B_input: corrupted packet received, re-acking 12
+          TOLAYER3: packet being lost
+
+EVENT time: 258.423920,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 20, expected 13), discarding, re-acking 12
+
+EVENT time: 262.288879,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 28
+
+EVENT time: 263.688385,  type: 2, fromlayer3  entity: 0
+A_input: old/duplicate ACK 12 received (base already 13), ignoring
+
+EVENT time: 274.972382,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 29
+
+EVENT time: 275.084564,  type: 0, timerinterrupt   entity: 0
+A_timerinterrupt: timeout! retransmitting seq 13 through 20
+          TOLAYER3: packet being corrupted
+
+EVENT time: 278.252228,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 13, delivering to layer5
+
+EVENT time: 287.476288,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 13 received
+A_input: 7 packet(s) still outstanding, restarting timer
+A: window has room, sending buffered seq 21 (base=14, sent_upto=21)
+          TOLAYER3: packet being lost
+
+EVENT time: 287.626587,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 30
+
+EVENT time: 287.955566,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 31
+
+EVENT time: 288.245087,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 14, delivering to layer5
+
+EVENT time: 290.390991,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 14 received
+A_input: 7 packet(s) still outstanding, restarting timer
+A: window has room, sending buffered seq 22 (base=15, sent_upto=22)
+          TOLAYER3: packet being lost
+
+EVENT time: 294.588470,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 32
+
+EVENT time: 297.973450,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 15, delivering to layer5
+          TOLAYER3: packet being lost
+
+EVENT time: 304.291809,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 16, delivering to layer5
+          TOLAYER3: packet being lost
+
+EVENT time: 306.879395,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 17, delivering to layer5
+
+EVENT time: 309.762787,  type: 2, fromlayer3  entity: 1
+B_input: corrupted packet received, re-acking 17
+          TOLAYER3: packet being lost
+
+EVENT time: 312.895294,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 33
+
+EVENT time: 313.310883,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 19, expected 18), discarding, re-acking 17
+
+EVENT time: 315.390991,  type: 0, timerinterrupt   entity: 0
+A_timerinterrupt: timeout! retransmitting seq 15 through 22
+          TOLAYER3: packet being lost
+          TOLAYER3: packet being lost
+
+EVENT time: 316.410553,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 17 received
+A_input: 5 packet(s) still outstanding, restarting timer
+A: window has room, sending buffered seq 23 (base=18, sent_upto=23)
+A: window has room, sending buffered seq 24 (base=18, sent_upto=24)
+A: window has room, sending buffered seq 25 (base=18, sent_upto=25)
+          TOLAYER3: packet being corrupted
+
+EVENT time: 319.024780,  type: 2, fromlayer3  entity: 0
+A_input: old/duplicate ACK 17 received (base already 18), ignoring
+
+EVENT time: 320.060211,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 20, expected 18), discarding, re-acking 17
+
+EVENT time: 324.344940,  type: 2, fromlayer3  entity: 0
+A_input: old/duplicate ACK 17 received (base already 18), ignoring
+
+EVENT time: 326.148132,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 16, expected 18), discarding, re-acking 17
+
+EVENT time: 330.470215,  type: 2, fromlayer3  entity: 0
+A_input: old/duplicate ACK 17 received (base already 18), ignoring
+
+EVENT time: 331.629395,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 34
+
+EVENT time: 335.395264,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 17, expected 18), discarding, re-acking 17
+
+EVENT time: 338.843353,  type: 2, fromlayer3  entity: 0
+A_input: old/duplicate ACK 17 received (base already 18), ignoring
+
+EVENT time: 339.971985,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 19, expected 18), discarding, re-acking 17
+
+EVENT time: 341.410553,  type: 0, timerinterrupt   entity: 0
+A_timerinterrupt: timeout! retransmitting seq 18 through 25
+          TOLAYER3: packet being lost
+          TOLAYER3: packet being lost
+
+EVENT time: 342.331848,  type: 2, fromlayer3  entity: 0
+A_input: old/duplicate ACK 17 received (base already 18), ignoring
+
+EVENT time: 345.906555,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 35
+
+EVENT time: 346.531799,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 20, expected 18), discarding, re-acking 17
+
+EVENT time: 348.381622,  type: 2, fromlayer3  entity: 0
+A_input: old/duplicate ACK 17 received (base already 18), ignoring
+
+EVENT time: 351.401031,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 21, expected 18), discarding, re-acking 17
+          TOLAYER3: packet being lost
+
+EVENT time: 355.736298,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 22, expected 18), discarding, re-acking 17
+          TOLAYER3: packet being corrupted
+
+EVENT time: 359.189056,  type: 2, fromlayer3  entity: 0
+A_input: corrupted ack packet received, ignoring (will rely on timeout)
+
+EVENT time: 362.988251,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 23, expected 18), discarding, re-acking 17
+
+EVENT time: 364.052246,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 36
+
+EVENT time: 366.410553,  type: 0, timerinterrupt   entity: 0
+A_timerinterrupt: timeout! retransmitting seq 18 through 25
+          TOLAYER3: packet being corrupted
+          TOLAYER3: packet being corrupted
+          TOLAYER3: packet being corrupted
+          TOLAYER3: packet being corrupted
+          TOLAYER3: packet being lost
+
+EVENT time: 367.404816,  type: 2, fromlayer3  entity: 0
+A_input: old/duplicate ACK 17 received (base already 18), ignoring
+
+EVENT time: 368.590576,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 24, expected 18), discarding, re-acking 17
+          TOLAYER3: packet being lost
+
+EVENT time: 371.114166,  type: 2, fromlayer3  entity: 1
+B_input: corrupted packet received, re-acking 17
+
+EVENT time: 372.058472,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 37
+
+EVENT time: 373.302643,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 18, delivering to layer5
+          TOLAYER3: packet being corrupted
+
+EVENT time: 380.290375,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 19, delivering to layer5
+          TOLAYER3: packet being lost
+
+EVENT time: 381.106201,  type: 2, fromlayer3  entity: 0
+A_input: old/duplicate ACK 17 received (base already 18), ignoring
+
+EVENT time: 384.469727,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 38
+
+EVENT time: 385.704254,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 20, delivering to layer5
+          TOLAYER3: packet being corrupted
+
+EVENT time: 388.284271,  type: 2, fromlayer3  entity: 0
+A_input: corrupted ack packet received, ignoring (will rely on timeout)
+
+EVENT time: 391.410553,  type: 0, timerinterrupt   entity: 0
+A_timerinterrupt: timeout! retransmitting seq 18 through 25
+          TOLAYER3: packet being corrupted
+          TOLAYER3: packet being lost
+          TOLAYER3: packet being corrupted
+          TOLAYER3: packet being corrupted
+          TOLAYER3: packet being corrupted
+
+EVENT time: 393.024689,  type: 2, fromlayer3  entity: 0
+A_input: corrupted ack packet received, ignoring (will rely on timeout)
+
+EVENT time: 394.142273,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 39
+
+EVENT time: 395.342255,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 21, delivering to layer5
+
+EVENT time: 398.882416,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 40
+
+EVENT time: 399.156494,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 21 received
+A_input: 4 packet(s) still outstanding, restarting timer
+A: window has room, sending buffered seq 26 (base=22, sent_upto=26)
+          TOLAYER3: packet being corrupted
+A: window has room, sending buffered seq 27 (base=22, sent_upto=27)
+A: window has room, sending buffered seq 28 (base=22, sent_upto=28)
+          TOLAYER3: packet being corrupted
+A: window has room, sending buffered seq 29 (base=22, sent_upto=29)
+          TOLAYER3: packet being corrupted
+
+EVENT time: 402.000793,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 41
+
+EVENT time: 405.073914,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 22, delivering to layer5
+
+EVENT time: 409.174622,  type: 2, fromlayer3  entity: 1
+B_input: correct in-order packet, seq 23, delivering to layer5
+
+EVENT time: 409.929138,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 22 received
+A_input: 7 packet(s) still outstanding, restarting timer
+A: window has room, sending buffered seq 30 (base=23, sent_upto=30)
+
+EVENT time: 412.577423,  type: 2, fromlayer3  entity: 0
+A_input: valid cumulative ACK 23 received
+A_input: 7 packet(s) still outstanding, restarting timer
+A: window has room, sending buffered seq 31 (base=24, sent_upto=31)
+          TOLAYER3: packet being lost
+
+EVENT time: 414.488342,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 42
+
+EVENT time: 414.799744,  type: 2, fromlayer3  entity: 1
+B_input: corrupted packet received, re-acking 23
+          TOLAYER3: packet being corrupted
+
+EVENT time: 417.636169,  type: 2, fromlayer3  entity: 1
+B_input: corrupted packet received, re-acking 23
+          TOLAYER3: packet being corrupted
+
+EVENT time: 420.079865,  type: 2, fromlayer3  entity: 0
+A_input: corrupted ack packet received, ignoring (will rely on timeout)
+
+EVENT time: 421.017242,  type: 2, fromlayer3  entity: 1
+B_input: corrupted packet received, re-acking 23
+
+EVENT time: 427.047485,  type: 2, fromlayer3  entity: 1
+B_input: corrupted packet received, re-acking 23
+          TOLAYER3: packet being corrupted
+
+EVENT time: 428.489624,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 43
+
+EVENT time: 429.587097,  type: 2, fromlayer3  entity: 0
+A_input: corrupted ack packet received, ignoring (will rely on timeout)
+
+EVENT time: 430.993561,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 22, expected 24), discarding, re-acking 23
+          TOLAYER3: packet being lost
+
+EVENT time: 437.577423,  type: 0, timerinterrupt   entity: 0
+A_timerinterrupt: timeout! retransmitting seq 24 through 31
+          TOLAYER3: packet being lost
+          TOLAYER3: packet being lost
+          TOLAYER3: packet being lost
+
+EVENT time: 439.068787,  type: 2, fromlayer3  entity: 0
+A_input: old/duplicate ACK 23 received (base already 24), ignoring
+
+EVENT time: 440.971863,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 23, expected 24), discarding, re-acking 23
+
+EVENT time: 441.590454,  type: 2, fromlayer3  entity: 0
+A_input: corrupted ack packet received, ignoring (will rely on timeout)
+
+EVENT time: 445.672150,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 44
+
+EVENT time: 448.845398,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 25, expected 24), discarding, re-acking 23
+          TOLAYER3: packet being lost
+
+EVENT time: 449.015717,  type: 2, fromlayer3  entity: 0
+A_input: old/duplicate ACK 23 received (base already 24), ignoring
+
+EVENT time: 453.132050,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 18, expected 24), discarding, re-acking 23
+          TOLAYER3: packet being lost
+
+EVENT time: 461.754181,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 45
+
+EVENT time: 462.031891,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 46
+
+EVENT time: 462.136932,  type: 2, fromlayer3  entity: 1
+B_input: corrupted packet received, re-acking 23
+
+EVENT time: 462.577423,  type: 0, timerinterrupt   entity: 0
+A_timerinterrupt: timeout! retransmitting seq 24 through 31
+          TOLAYER3: packet being lost
+          TOLAYER3: packet being corrupted
+          TOLAYER3: packet being lost
+
+EVENT time: 466.117065,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 21, expected 24), discarding, re-acking 23
+          TOLAYER3: packet being lost
+
+EVENT time: 467.304169,  type: 2, fromlayer3  entity: 0
+A_input: old/duplicate ACK 23 received (base already 24), ignoring
+
+EVENT time: 468.460297,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 47
+
+EVENT time: 472.251953,  type: 2, fromlayer3  entity: 1
+B_input: out-of-order packet (seq 22, expected 24), discarding, re-acking 23
+
+EVENT time: 473.503815,  type: 2, fromlayer3  entity: 1
+B_input: corrupted packet received, re-acking 23
+
+EVENT time: 476.447601,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 48
+
+EVENT time: 477.398041,  type: 2, fromlayer3  entity: 0
+A_input: old/duplicate ACK 23 received (base already 24), ignoring
+
+EVENT time: 477.872803,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 49
+
+EVENT time: 479.164642,  type: 2, fromlayer3  entity: 1
+B_input: corrupted packet received, re-acking 23
+          TOLAYER3: packet being corrupted
+
+EVENT time: 480.520050,  type: 2, fromlayer3  entity: 1
+B_input: corrupted packet received, re-acking 23
+          TOLAYER3: packet being lost
+
+EVENT time: 484.305023,  type: 2, fromlayer3  entity: 0
+A_input: old/duplicate ACK 23 received (base already 24), ignoring
+
+EVENT time: 484.356750,  type: 1, fromlayer5  entity: 0
+A_output: new message assigned seq 50
+
+EVENT time: 485.507172,  type: 2, fromlayer3  entity: 0
+ Simulator terminated at time 485.507172
+ after sending 50 msgs from layer5

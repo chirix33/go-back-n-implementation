@@ -11,9 +11,10 @@ loss, corruption, and delay).
 ## Status
 
 - **Alternating-Bit Protocol (rdt3.0): implemented and tested.**
-- **Go-Back-N: in progress.** Reliable-channel operation and corruption
-  handling are implemented and tested; loss handling and the mandated
-  combined test case are not done yet.
+- **Go-Back-N: in progress.** Reliable-channel operation, corruption
+  handling, loss handling, and the mandated combined case (loss 0.2,
+  corrupt 0.2) are implemented and tested; the two extra parameter
+  combinations are still to do.
 - Report: not started yet (will cover both protocols once Go-Back-N is
   done).
 
@@ -84,8 +85,7 @@ No other emulator code, and no data structure, was changed.
   (rather than waiting for the timer) in addition to the normal timeout
   path.
 
-## Design summary (Go-Back-N, window N=8) — reliable channel + corruption
-handling only, tested so far
+## Design summary (Go-Back-N, window N=8)
 
 - **Window**: sliding window of size 8, plain increasing sequence numbers
   (no modulo wraparound needed since the simulator always runs a bounded
@@ -114,7 +114,64 @@ handling only, tested so far
   caught by the checksum, B re-ACKing the last good packet, and A both
   discarding corrupted ACKs and recovering outstanding packets via
   timeout retransmission of the whole unacked window.
-- Not yet implemented/tested: loss handling, the mandated combined
-  loss+corruption test case, timer tuning discussion, and the two
-  additional required parameter combinations. These are planned for
-  upcoming weeks.
+
+### Loss handling (loss-only test)
+
+Run: 50 messages, loss = 0.2, corrupt = 0.0, mean arrival = 10, trace = 2
+(`sample_outputs/GBN_week3_lossonly_loss0.2_corrupt0.0.log`). Result: 23
+messages delivered and cumulatively ACKed, 38 packets lost in the channel,
+10 timeouts, no buffer overflow.
+
+Loss needs no extra code beyond the timer: a lost data packet makes B see a
+gap and re-ACK the last good packet, and a lost ACK is covered by the next
+cumulative ACK. If nothing gets through, A's timer fires and resends the
+whole outstanding window. Example from the log (time 75-88): ACKs for seq 5
+and 6 were both lost, so A's base stayed at 5. The timer fired and resent
+5-7. B had already delivered 5 and 6, so it discarded the copies and
+re-ACKed 6. The single cumulative ACK 6 then acknowledged both 5 and 6 at
+once and base moved to 7.
+
+### Mandated combined case
+
+Run: 50 messages, loss = 0.2, corrupt = 0.2, mean arrival = 10, trace = 2
+(`sample_outputs/GBN_week3_combined_loss0.2_corrupt0.2.log`). Result: 23
+messages delivered and cumulatively ACKed (the requirement is at least
+20), 50 packets lost, 29 corrupted, 12 timeouts, no buffer overflow. The
+simulator stops once the last message has been handed to A, so a few
+messages are normally still in flight at the end.
+
+Note: the message count matters. With the same loss/corrupt settings and
+100 messages, A's 50-slot buffer fills and the program aborts with its
+"PANIC" message, because with these error rates GBN's throughput is below
+one message per 10 time units. This is the specified abort behaviour, not a
+crash.
+
+### Timer tuning (A_TIMEOUT)
+
+`A_TIMEOUT` is 25.0. One-way delay averages about 5 and queueing behind
+other packets adds to that, so the round trip is well above 10. I swept
+the timeout on the mandated case (50 messages, loss 0.2, corrupt 0.2, mean
+arrival 10) over 20 different random seeds (the emulator normally uses a
+fixed seed, which makes a single run noisy). Totals over the 20 runs:
+
+| A_TIMEOUT | messages ACKed (total) | timeouts (total) |
+|-----------|------------------------|------------------|
+| 10        | 343                    | 846              |
+| 15        | 412                    | 450              |
+| 20        | 388                    | 322              |
+| 25        | 403                    | 259              |
+| 30        | 369                    | 196              |
+
+A timeout of 10 is too short: the timer often fires while the ACK is still
+on its way, causing many needless retransmissions and lower throughput.
+Above 30, A sits idle too long after a real loss. Values around 15-25
+perform about the same within the noise of this test; 25 was kept because
+it sends almost half as many retransmissions as 15 for similar throughput.
+It is a reasonable choice, not a proven optimum.
+
+### Status after this phase
+
+- Implemented and tested: reliable channel, corruption-only, loss-only, and
+  the mandated combined case.
+- Not done yet: the two additional required parameter combinations and the
+  report.
