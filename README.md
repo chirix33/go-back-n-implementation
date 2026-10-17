@@ -11,19 +11,18 @@ loss, corruption, and delay).
 ## Status
 
 - **Alternating-Bit Protocol (rdt3.0): implemented and tested.**
-- **Go-Back-N: in progress.** Reliable-channel operation, corruption
-  handling, loss handling, and the mandated combined case (loss 0.2,
-  corrupt 0.2) are implemented and tested; the two extra parameter
-  combinations are still to do.
-- Report: not started yet (will cover both protocols once Go-Back-N is
-  done).
+- **Go-Back-N (window 8): implemented and tested** - reliable channel,
+  corruption only, loss only, the mandated combined case and two more
+  parameter combinations.
+- **Report:** `report/report.tex` / `report/report.pdf` (IEEE, two column,
+  2 pages).
 
 ## Contents
 
 - `src/ABP_AbdulMuumin.c` - Alternating-Bit Protocol (rdt3.0), stop-and-wait
   with ACK and NACK.
-- `src/GBN_AbdulMuumin.c` - Go-Back-N (window N=8), in progress (see
-  Status above for what's tested so far).
+- `src/GBN_AbdulMuumin.c` - Go-Back-N (window N=8), with ACK and NACK.
+- `report/` - the report (`report.tex`, `report.pdf`).
 - `Makefile` - builds `./abp` and `./gbn`.
 - `sample_outputs/` - captured trace-2 run(s) demonstrating recovery from
   loss and corruption.
@@ -88,90 +87,75 @@ No other emulator code, and no data structure, was changed.
 ## Design summary (Go-Back-N, window N=8)
 
 - **Window**: sliding window of size 8, plain increasing sequence numbers
-  (no modulo wraparound needed since the simulator always runs a bounded
-  number of messages). Sender buffers up to 50 outstanding messages and
-  sends as many as the window currently allows; it aborts gracefully
-  (prints a message and exits) rather than crashing if that buffer would
-  ever be exceeded.
-- **Checksum**: covers `seqnum + acknum` plus the payload, computed
-  identically on both sides, so a corrupted header field is caught the
-  same way a corrupted payload is.
-- **ACKs**: B sends a cumulative ACK for the highest in-order sequence
-  number it has received. A corrupted or out-of-order packet at B is
-  discarded and B re-ACKs its last correctly-received in-order packet
-  (the GBN equivalent of a NACK — it is not relying on A's timeout alone
-  to detect the problem).
-- **Timer**: a single timer per the emulator's single-timer model, kept
-  for the oldest unacked (base) packet; restarted whenever base advances
-  but packets remain outstanding, stopped when the window is fully
-  acked.
-- Tested so far: (a) a fully reliable channel (loss = corrupt = 0,
-  `sample_outputs/GBN_week2_reliable_loss0.0_corrupt0.0.log`) — all
-  messages sent are delivered and cumulative-ACKed in order; (b)
-  corruption-only (loss = 0, corrupt = 0.3,
-  `sample_outputs/GBN_week2_corruptonly_loss0.0_corrupt0.3.log`) — the
-  logs show both corrupted-payload and corrupted-header cases being
-  caught by the checksum, B re-ACKing the last good packet, and A both
-  discarding corrupted ACKs and recovering outstanding packets via
-  timeout retransmission of the whole unacked window.
+  (no wraparound; the simulator runs a bounded number of messages). The
+  sender buffers up to 50 outstanding messages and sends as many as the
+  window allows; if the buffer would be exceeded it prints a message and
+  exits.
+- **Checksum**: `seqnum + acknum` plus the payload bytes, computed
+  identically on both sides, so a corrupted header field is caught like a
+  corrupted payload.
+- **ACK**: B sends a cumulative ACK (`seqnum = 0`, `acknum` = highest
+  in-order packet delivered).
+- **NACK**: when B gets a corrupted packet, or one that skips ahead (a
+  gap), it discards it and sends a NACK (`seqnum = 1`, `acknum` = last
+  in-order packet delivered). A stale duplicate gets a plain re-ACK. On a
+  valid NACK that says B still wants `base`, A resends the window at once.
+  A reacts to only one NACK per `base` value (otherwise every packet
+  behind a lost one would trigger another full resend); after that the
+  timer takes over.
+- **Timer**: one timer, for the oldest unacked packet; restarted when
+  `base` advances and packets remain, stopped when everything is acked. On
+  timeout the whole unacked range is resent.
 
-### Loss handling (loss-only test)
+## Test runs (trace level 2)
 
-Run: 50 messages, loss = 0.2, corrupt = 0.0, mean arrival = 10, trace = 2
-(`sample_outputs/GBN_week3_lossonly_loss0.2_corrupt0.0.log`). Result: 23
-messages delivered and cumulatively ACKed, 38 packets lost in the channel,
-10 timeouts, no buffer overflow.
+All logs in `sample_outputs/` were produced by the final code. "Confirmed"
+is the highest cumulative ACK that reached A. The run column gives
+messages / loss / corrupt / mean arrival.
 
-Loss needs no extra code beyond the timer: a lost data packet makes B see a
-gap and re-ACK the last good packet, and a lost ACK is covered by the next
-cumulative ACK. If nothing gets through, A's timer fires and resends the
-whole outstanding window. Example from the log (time 75-88): ACKs for seq 5
-and 6 were both lost, so A's base stayed at 5. The timer fired and resent
-5-7. B had already delivered 5 and 6, so it discarded the copies and
-re-ACKed 6. The single cumulative ACK 6 then acknowledged both 5 and 6 at
-once and base moved to 7.
+| Log | Run | Confirmed |
+|-----|-----|-----------|
+| `ABP_loss0.1_corrupt0.3.log` | ABP: 12 / 0.1 / 0.3 / 1000 | 10 |
+| `GBN_reliable_loss0.0_corrupt0.0.log` | GBN: 20 / 0 / 0 / 10 | 19 |
+| `GBN_corruptonly_loss0.0_corrupt0.3.log` | GBN: 20 / 0 / 0.3 / 10 | 10 |
+| `GBN_lossonly_loss0.2_corrupt0.0.log` | GBN: 50 / 0.2 / 0 / 10 | 46 |
+| `GBN_case1_loss0.2_corrupt0.2_lambda10.log` | GBN mandated: 50 / 0.2 / 0.2 / 10 | 22 |
+| `GBN_case2_loss0.35_corrupt0.1_lambda12.log` | GBN extra: 60 / 0.35 / 0.1 / 12 | 25 |
+| `GBN_case3_loss0.1_corrupt0.15_lambda8.log` | GBN extra: 60 / 0.1 / 0.15 / 8 | 27 |
 
-### Mandated combined case
+The simulator stops once the last message is handed to A, so a few
+messages are normally still in flight at the end. None of these runs hit
+the 50-buffer abort. The message count matters: with loss 0.2 and corrupt
+0.2, 100 messages fills the 50-slot buffer and the program aborts with its
+"PANIC" message (the specified behaviour, not a crash); use about 50.
 
-Run: 50 messages, loss = 0.2, corrupt = 0.2, mean arrival = 10, trace = 2
-(`sample_outputs/GBN_week3_combined_loss0.2_corrupt0.2.log`). Result: 23
-messages delivered and cumulatively ACKed (the requirement is at least
-20), 50 packets lost, 29 corrupted, 12 timeouts, no buffer overflow. The
-simulator stops once the last message has been handed to A, so a few
-messages are normally still in flight at the end.
+To re-run one case, e.g. the mandated one:
 
-Note: the message count matters. With the same loss/corrupt settings and
-100 messages, A's 50-slot buffer fills and the program aborts with its
-"PANIC" message, because with these error rates GBN's throughput is below
-one message per 10 time units. This is the specified abort behaviour, not a
-crash.
+```
+printf "50
+0.2
+0.2
+10
+2
+" | ./gbn
+```
 
 ### Timer tuning (A_TIMEOUT)
 
-`A_TIMEOUT` is 25.0. One-way delay averages about 5 and queueing behind
-other packets adds to that, so the round trip is well above 10. I swept
-the timeout on the mandated case (50 messages, loss 0.2, corrupt 0.2, mean
-arrival 10) over 20 different random seeds (the emulator normally uses a
-fixed seed, which makes a single run noisy). Totals over the 20 runs:
+`A_TIMEOUT` is 25.0. One-way delay averages about 5 and queueing adds to
+it, so the round trip is well above 10. I swept the timeout on the mandated
+case (50 messages, loss 0.2, corrupt 0.2, mean arrival 10) over 20 random
+seeds (the emulator normally uses a fixed seed, which makes one run
+noisy). Totals over the 20 runs:
 
-| A_TIMEOUT | messages ACKed (total) | timeouts (total) |
-|-----------|------------------------|------------------|
-| 10        | 343                    | 846              |
-| 15        | 412                    | 450              |
-| 20        | 388                    | 322              |
-| 25        | 403                    | 259              |
-| 30        | 369                    | 196              |
+| A_TIMEOUT | messages confirmed (total) | timeouts (total) |
+|-----------|----------------------------|------------------|
+| 10        | 350                        | 769              |
+| 15        | 373                        | 426              |
+| 20        | 424                        | 284              |
+| 25        | 427                        | 193              |
+| 30        | 421                        | 141              |
 
-A timeout of 10 is too short: the timer often fires while the ACK is still
-on its way, causing many needless retransmissions and lower throughput.
-Above 30, A sits idle too long after a real loss. Values around 15-25
-perform about the same within the noise of this test; 25 was kept because
-it sends almost half as many retransmissions as 15 for similar throughput.
-It is a reasonable choice, not a proven optimum.
-
-### Status after this phase
-
-- Implemented and tested: reliable channel, corruption-only, loss-only, and
-  the mandated combined case.
-- Not done yet: the two additional required parameter combinations and the
-  report.
+10-15 cause many spurious timeouts. From 20 up throughput is flat within
+the noise while retransmissions keep falling; 25 was kept as a reasonable
+choice, not a proven optimum.

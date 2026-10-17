@@ -54,8 +54,12 @@ struct pkt {
    Packet fields:
      - DATA packet: seqnum = message's sequence number, acknum = unused (0),
                      payload = message data.
-     - ACK packet:  seqnum = 0 (unused), acknum = highest in-order sequence
+     - ACK packet:  seqnum = 0 (ACK), acknum = highest in-order sequence
                      number B has received so far (cumulative ACK, per GBN).
+     - NACK packet: seqnum = 1 (NACK), acknum = same cumulative value; sent
+                     by B when it receives a corrupted packet or a packet
+                     that skips ahead (a gap), i.e. "not this one, I am
+                     still waiting for acknum+1".
 
    checksum = seqnum + acknum + (sum of payload bytes as unsigned char),
    computed the same way on both sides, covering header fields as well as
@@ -82,17 +86,24 @@ struct pkt {
 
    Receiver (B) does no buffering (matches the GBN receiver FSM): it
    accepts only the exact expected in-order packet, delivers it and ACKs
-   it, and otherwise (out-of-order or corrupted) discards it and
-   re-sends an ACK for the last correctly-received in-order packet.
+   it. A corrupted packet or one that skips ahead is discarded and answered
+   with a NACK carrying the last correctly-received in-order number. A
+   stale duplicate (seq below the expected one, e.g. after a spurious
+   timeout) is discarded and answered with a plain re-ACK.
+
+   On a valid NACK for the current base, A retransmits the window at once
+   instead of waiting for the timer. To avoid a NACK storm (every packet
+   behind a lost one would trigger another full-window resend), A reacts
+   to at most one NACK per base value; any further recovery for that base
+   falls back on the timer.
 --------------------------------------------------------------------- */
 
 #define WINDOW_N      8
 #define MAXBUF        50
 /* Chosen empirically on the mandated case (loss=0.2, corrupt=0.2, mean
-   arrival=10, window=8): ~15-25 gives the best throughput; much shorter
-   causes spurious timeouts, much longer leaves the sender idle after a
-   loss. 25 gives similar throughput to 15 with far fewer retransmissions.
-   See README "Timer tuning" for the measurements. */
+   arrival=10, window=8): 20-30 give about the same throughput; 10-15 cause
+   many spurious timeouts, and 25 needs fewer retransmissions than 20.
+   Not a proven optimum. See README "Timer tuning" for the measurements. */
 #define A_TIMEOUT     25.0
 
 /* ---------------- A (sender) state ---------------- */
@@ -100,6 +111,7 @@ static struct pkt A_buffer[MAXBUF];  /* buffered/sent-but-unacked packets */
 static int A_base;         /* oldest unacked sequence number */
 static int A_nextseqnum;   /* next sequence number to assign to new data */
 static int A_sent_upto;    /* highest sequence number actually sent so far */
+static int A_nack_base;    /* base value for which a NACK already caused a resend */
 
 static int compute_checksum(seqnum, acknum, payload)
 int seqnum, acknum;
@@ -165,32 +177,62 @@ B_output(message)  /* need be completed only for extra credit */
 
 }
 
+/* resend every sent-but-unacked packet, base .. sent_upto */
+static void resend_window()
+{
+  int s, idx;
+
+  for (s = A_base; s <= A_sent_upto; s++) {
+    idx = (s - 1) % MAXBUF;
+    tolayer3(0, A_buffer[idx]);
+    }
+}
+
 /* called from layer 3, when a packet arrives for layer 4 */
 A_input(packet)
   struct pkt packet;
 {
+  int is_nack;
+
   if (is_corrupt(packet)) {
     printf("A_input: corrupted ack packet received, ignoring (will rely on timeout)\n");
     return;
     }
 
-  if (packet.acknum < A_base) {
+  is_nack = (packet.seqnum == 1);
+
+  if (packet.acknum >= A_base) {
+    printf("A_input: valid cumulative %s %d received\n", is_nack ? "NACK" : "ACK", packet.acknum);
+    A_base = packet.acknum + 1;
+
+    if (A_base > A_sent_upto) {
+      printf("A_input: all outstanding packets acked, stopping timer\n");
+      stoptimer(0);
+      }
+    else {
+      printf("A_input: %d packet(s) still outstanding, restarting timer\n", A_sent_upto - A_base + 1);
+      stoptimer(0);
+      starttimer(0, A_TIMEOUT);
+      }
+    }
+  else if (!is_nack) {
     printf("A_input: old/duplicate ACK %d received (base already %d), ignoring\n",
            packet.acknum, A_base);
     return;
     }
 
-  printf("A_input: valid cumulative ACK %d received\n", packet.acknum);
-  A_base = packet.acknum + 1;
-
-  if (A_base > A_sent_upto) {
-    printf("A_input: all outstanding packets acked, stopping timer\n");
-    stoptimer(0);
-    }
-  else {
-    printf("A_input: %d packet(s) still outstanding, restarting timer\n", A_sent_upto - A_base + 1);
-    stoptimer(0);
-    starttimer(0, A_TIMEOUT);
+  if (is_nack && packet.acknum + 1 == A_base && A_base <= A_sent_upto) {
+    if (A_nack_base == A_base) {
+      printf("A_input: NACK for base %d already acted on, waiting for timer\n", A_base);
+      }
+    else {
+      printf("A_input: NACK says B still wants seq %d, retransmitting %d through %d now\n",
+             A_base, A_base, A_sent_upto);
+      A_nack_base = A_base;
+      resend_window();
+      stoptimer(0);
+      starttimer(0, A_TIMEOUT);
+      }
     }
 
   try_send_window();
@@ -216,6 +258,7 @@ A_init()
   A_base = 1;
   A_nextseqnum = 1;
   A_sent_upto = 0;
+  A_nack_base = 0;
 }
 
 
@@ -229,23 +272,35 @@ B_input(packet)
   struct pkt packet;
 {
   struct pkt ack;
+  int i;
+
+  for (i = 0; i < 20; i++)
+    ack.payload[i] = 0;
+  ack.seqnum = 0;             /* 0 = ACK, 1 = NACK */
 
   if (!is_corrupt(packet) && packet.seqnum == B_expectedseqnum) {
     printf("B_input: correct in-order packet, seq %d, delivering to layer5\n", packet.seqnum);
     tolayer5(1, packet.payload);
     ack.acknum = B_expectedseqnum;
     B_expectedseqnum++;
+    printf("B_input: sending ACK %d\n", ack.acknum);
     }
   else {
-    if (is_corrupt(packet))
-      printf("B_input: corrupted packet received, re-acking %d\n", B_expectedseqnum - 1);
-    else
-      printf("B_input: out-of-order packet (seq %d, expected %d), discarding, re-acking %d\n",
-             packet.seqnum, B_expectedseqnum, B_expectedseqnum - 1);
     ack.acknum = B_expectedseqnum - 1;
+    if (is_corrupt(packet)) {
+      ack.seqnum = 1;
+      printf("B_input: corrupted packet received, sending NACK (last good %d)\n", ack.acknum);
+      }
+    else if (packet.seqnum > B_expectedseqnum) {
+      ack.seqnum = 1;
+      printf("B_input: gap (seq %d, expected %d), discarding, sending NACK (last good %d)\n",
+             packet.seqnum, B_expectedseqnum, ack.acknum);
+      }
+    else
+      printf("B_input: duplicate packet (seq %d, expected %d), discarding, re-acking %d\n",
+             packet.seqnum, B_expectedseqnum, ack.acknum);
     }
 
-  ack.seqnum = 0;
   ack.checksum = compute_checksum(ack.seqnum, ack.acknum, ack.payload);
   tolayer3(1, ack);
 }

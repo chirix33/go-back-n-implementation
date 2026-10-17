@@ -176,6 +176,10 @@ B_input(packet)
   struct pkt packet;
 {
   struct pkt reply;
+  int i;
+
+  for (i = 0; i < 20; i++)
+    reply.payload[i] = 0;
 
   if (is_corrupt(packet)) {
     printf("B_input: corrupted packet received, sending NACK\n");
